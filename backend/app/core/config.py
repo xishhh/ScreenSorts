@@ -30,6 +30,9 @@ class Settings(BaseSettings):
     demo_sample_size: int = 100
     demo_random_seed: int = 42
 
+    ocr_results_dir: str = "data/ocr_results"
+    ocr_batch_size: int = 10
+
     @property
     def cors_origin_list(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins.split(",")]
@@ -49,6 +52,10 @@ class Settings(BaseSettings):
     @property
     def repo_datasets_path(self) -> Path:
         return self._resolve(self.repo_datasets_dir)
+
+    @property
+    def ocr_results_path(self) -> Path:
+        return self._resolve(self.ocr_results_dir)
 
     def _resolve(self, path_str: str) -> Path:
         p = Path(path_str)

@@ -99,6 +99,10 @@ data/metadata/*
 !data/metadata/.gitkeep
 data/datasets/*
 !data/datasets/.gitkeep
+data/ocr_results/*
+!data/ocr_results/.gitkeep
+reports/*
+!reports/.gitkeep
 dataset/
 *.zip
 *.tar
