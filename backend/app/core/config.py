@@ -42,6 +42,14 @@ class Settings(BaseSettings):
     chroma_collection_name: str = "screensorts"
     chroma_batch_size: int = 50
 
+    groq_api_key: str = ""
+    groq_model: str = "llama-3.3-70b-versatile"
+    groq_temperature: float = 0.3
+    groq_max_tokens: int = 300
+    groq_timeout: int = 30
+    groq_max_retries: int = 2
+    groq_cache_dir: str = "data/explanation_cache"
+
     @property
     def cors_origin_list(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins.split(",")]
