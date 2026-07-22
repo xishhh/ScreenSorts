@@ -101,6 +101,8 @@ data/datasets/*
 !data/datasets/.gitkeep
 data/ocr_results/*
 !data/ocr_results/.gitkeep
+data/embeddings/*
+!data/embeddings/.gitkeep
 reports/*
 !reports/.gitkeep
 dataset/

@@ -33,6 +33,11 @@ class Settings(BaseSettings):
     ocr_results_dir: str = "data/ocr_results"
     ocr_batch_size: int = 10
 
+    embedding_model_name: str = "BAAI/bge-small-en-v1.5"
+    embedding_dimension: int = 384
+    embedding_batch_size: int = 32
+    embeddings_dir: str = "data/embeddings"
+
     @property
     def cors_origin_list(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins.split(",")]
@@ -56,6 +61,10 @@ class Settings(BaseSettings):
     @property
     def ocr_results_path(self) -> Path:
         return self._resolve(self.ocr_results_dir)
+
+    @property
+    def embeddings_path(self) -> Path:
+        return self._resolve(self.embeddings_dir)
 
     def _resolve(self, path_str: str) -> Path:
         p = Path(path_str)
