@@ -91,6 +91,14 @@ vector_store/*
 !vector_store/.gitkeep
 data/*
 !data/.gitkeep
+data/demo/*
+!data/demo/.gitkeep
+data/user/*
+!data/user/.gitkeep
+data/metadata/*
+!data/metadata/.gitkeep
+data/datasets/*
+!data/datasets/.gitkeep
 dataset/
 *.zip
 *.tar

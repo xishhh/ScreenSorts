@@ -1,4 +1,8 @@
+from pathlib import Path
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 
 
 class Settings(BaseSettings):
@@ -18,9 +22,39 @@ class Settings(BaseSettings):
 
     cors_origins: str = "http://localhost:3000"
 
+    repo_demo_dir: str = "data/demo"
+    repo_user_dir: str = "data/user"
+    repo_metadata_dir: str = "data/metadata"
+    repo_datasets_dir: str = "data/datasets"
+
+    demo_sample_size: int = 100
+    demo_random_seed: int = 42
+
     @property
     def cors_origin_list(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins.split(",")]
+
+    @property
+    def repo_demo_path(self) -> Path:
+        return self._resolve(self.repo_demo_dir)
+
+    @property
+    def repo_user_path(self) -> Path:
+        return self._resolve(self.repo_user_dir)
+
+    @property
+    def repo_metadata_path(self) -> Path:
+        return self._resolve(self.repo_metadata_dir)
+
+    @property
+    def repo_datasets_path(self) -> Path:
+        return self._resolve(self.repo_datasets_dir)
+
+    def _resolve(self, path_str: str) -> Path:
+        p = Path(path_str)
+        if p.is_absolute():
+            return p
+        return _PROJECT_ROOT / p
 
 
 settings = Settings()
