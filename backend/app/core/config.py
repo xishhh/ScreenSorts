@@ -38,6 +38,10 @@ class Settings(BaseSettings):
     embedding_batch_size: int = 32
     embeddings_dir: str = "data/embeddings"
 
+    chroma_persist_dir: str = "vector_store"
+    chroma_collection_name: str = "screensorts"
+    chroma_batch_size: int = 50
+
     @property
     def cors_origin_list(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins.split(",")]
@@ -65,6 +69,10 @@ class Settings(BaseSettings):
     @property
     def embeddings_path(self) -> Path:
         return self._resolve(self.embeddings_dir)
+
+    @property
+    def chroma_persist_path(self) -> Path:
+        return self._resolve(self.chroma_persist_dir)
 
     def _resolve(self, path_str: str) -> Path:
         p = Path(path_str)
