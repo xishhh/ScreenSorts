@@ -1,7 +1,9 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from app.api.v1.router import router as v1_router
 from app.core.config import settings
@@ -40,3 +42,8 @@ app.add_exception_handler(AppException, app_exception_handler)
 app.add_exception_handler(Exception, unhandled_exception_handler)
 
 app.include_router(v1_router)
+
+data_dir = settings._resolve("data")
+if data_dir.is_dir():
+    app.mount("/data", StaticFiles(directory=str(data_dir)), name="data")
+    logger.info("Serving static files from %s at /data", data_dir)
