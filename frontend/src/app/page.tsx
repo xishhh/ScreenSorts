@@ -1,10 +1,10 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { SearchBar } from "@/components/search/search-bar"
 import { ResultCard } from "@/components/search/result-card"
-import { search as searchApi, explain as explainApi } from "@/lib/api"
-import type { SearchResultItem, ExplainItem } from "@/lib/types"
+import { search as searchApi, explain as explainApi, fetchDemoStatus } from "@/lib/api"
+import type { SearchResultItem, ExplainItem, DemoStatusResponse } from "@/lib/types"
 
 export default function HomePage() {
   const [query, setQuery] = useState("")
@@ -18,6 +18,14 @@ export default function HomePage() {
   const [explanations, setExplanations] = useState<Map<string, ExplainItem>>(new Map())
   const [explainingIds, setExplainingIds] = useState<Set<string>>(new Set())
   const [uploadLoading, setUploadLoading] = useState(false)
+
+  const [demoStatus, setDemoStatus] = useState<DemoStatusResponse | null>(null)
+
+  useEffect(() => {
+    fetchDemoStatus()
+      .then(setDemoStatus)
+      .catch(() => {})
+  }, [])
 
   const handleSearch = useCallback(async (q: string) => {
     setQuery(q)
@@ -141,6 +149,31 @@ export default function HomePage() {
           <p className="text-sm">
             Search across thousands of pre-indexed demo screenshots
           </p>
+          {demoStatus && (
+            <div className="mt-3 flex flex-wrap items-center justify-center gap-2">
+              <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${
+                demoStatus.ready
+                  ? "bg-green-500/10 text-green-600 dark:text-green-400"
+                  : "bg-yellow-500/10 text-yellow-600 dark:text-yellow-400"
+              }`}>
+                <span className={`inline-block size-1.5 rounded-full ${
+                  demoStatus.ready ? "bg-green-500" : "bg-yellow-500"
+                }`} />
+                {demoStatus.ready ? "Demo Ready" : "Incomplete"}
+              </span>
+              {demoStatus.ready && (
+                <>
+                  <span className="text-xs text-muted-foreground">
+                    {demoStatus.screenshot_count} screenshots
+                  </span>
+                  <span className="text-xs text-muted-foreground">·</span>
+                  <span className="text-xs text-muted-foreground">
+                    {demoStatus.dataset_count} datasets
+                  </span>
+                </>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>

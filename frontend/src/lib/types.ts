@@ -54,3 +54,23 @@ export interface ExplainResponse {
 export interface ApiError {
   detail: string
 }
+
+export interface DemoComponentStatus {
+  name: string
+  exists: boolean
+  count: number
+  details: string
+}
+
+export interface DemoStatusResponse {
+  ready: boolean
+  screenshot_count: number
+  dataset_count: number
+  datasets: string[]
+  total_storage_bytes: number
+  build_timestamp: string | null
+  corpus: DemoComponentStatus
+  ocr: DemoComponentStatus
+  embeddings: DemoComponentStatus
+  index: DemoComponentStatus
+}

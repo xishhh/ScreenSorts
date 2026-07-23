@@ -1,4 +1,4 @@
-import type { SearchResponse, ExplainResponse } from "@/lib/types"
+import type { SearchResponse, ExplainResponse, DemoStatusResponse } from "@/lib/types"
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
 
@@ -29,6 +29,17 @@ export async function search(
   if (!res.ok) {
     const error = await res.json().catch(() => ({ detail: res.statusText }))
     throw new Error(error.detail || `Search failed (${res.status})`)
+  }
+  return res.json()
+}
+
+export async function fetchDemoStatus(): Promise<DemoStatusResponse> {
+  const res = await fetch(`${API_BASE}/api/v1/demo/status`, {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  })
+  if (!res.ok) {
+    throw new Error(`Demo status failed (${res.status})`)
   }
   return res.json()
 }

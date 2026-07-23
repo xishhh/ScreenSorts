@@ -19,6 +19,24 @@ from app.core.logging import logger
 async def lifespan(app: FastAPI):
     logger.info("Starting ScreenSorts API")
     logger.info(f"Debug mode: {settings.app_debug}")
+
+    from app.services.demo_mode_service import DemoModeService
+
+    demo = DemoModeService()
+    status = demo.check_readiness()
+    if status.ready:
+        logger.info(
+            "Demo Mode READY — %d screenshots across %d datasets",
+            status.screenshot_count,
+            status.dataset_count,
+        )
+    else:
+        logger.warning("Demo Mode NOT READY")
+        for component in [status.corpus, status.ocr, status.embeddings, status.index]:
+            if not component.exists:
+                logger.warning("  Missing: %s — %s", component.name, component.details)
+        logger.warning("Run 'python -m app.scripts.build_demo_corpus' to rebuild the demo corpus")
+
     yield
     logger.info("Shutting down ScreenSorts API")
 
