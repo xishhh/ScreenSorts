@@ -1,6 +1,6 @@
 import type { SearchResponse, ExplainResponse, DemoStatusResponse } from "@/lib/types"
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000"
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || ""
 
 function imageUrl(imagePath: string): string {
   const idx = imagePath.indexOf("data\\")
